@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>게시판</title>
-</head>
-<body>
-    <h1>게시판</h1>
-    {% for post in posts %}
-        <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc;">
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.content }}</p>
-            <small>작성일: {{ post.created_at }}</small>
-        </div>
-    {% empty %}
+{% extends 'board/base.html' %}
+
+{% block title %}게시글 목록{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">게시글 목록</h1>
+    {% if posts %}
+        <ul class="list-group">
+        {% for post in posts %}
+            <li class="list-group-item">
+                <!-- 게시글 번호와 제목을 링크로 만듭니다 -->
+                <a href="{% url 'post_detail' pk=post.pk %}" class="text-decoration-none">
+                    #{{ post.pk }}. {{ post.title }}
+                </a>
+                <br>
+                <small class="text-muted">작성일: {{ post.created_at }}</small>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
         <p>게시글이 없습니다.</p>
-    {% endfor %}
-</body>
-</html>
+    {% endif %}
+    <a href="{% url 'post_create' %}" class="btn btn-primary mt-3">게시글 작성</a>
+{% endblock %}

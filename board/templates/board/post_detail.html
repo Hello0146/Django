@@ -1,0 +1,32 @@
+{% extends 'board/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <small class="text-muted">작성일: {{ post.created_at }}</small>
+
+    <hr>
+    <h2>댓글</h2>
+    {% if post.comments.all %}
+        {% for comment in post.comments.all %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                    <small class="text-muted">{{ comment.created_at }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>댓글이 없습니다.</p>
+    {% endif %}
+
+    <hr>
+    <h2>댓글 작성</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">댓글 추가</button>
+    </form>
+{% endblock %}
